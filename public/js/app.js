@@ -1908,6 +1908,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.js");
 //
 //
 //
@@ -1925,6 +1926,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1935,11 +1937,7 @@ __webpack_require__.r(__webpack_exports__);
     user: Object
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
-
-    if (sessionStorage.getItem('access_token')) {
-      this.token = sessionStorage.getItem('access_token');
-    }
+    Object(_utils__WEBPACK_IMPORTED_MODULE_0__["saveTokensUsers"])();
   }
 });
 
@@ -2192,6 +2190,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mounted: function mounted() {
+    Object(_utils__WEBPACK_IMPORTED_MODULE_0__["saveTokensUsers"])();
     this.configHeaders();
     this.getCustomers();
   },
@@ -2204,6 +2203,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (data) {
         if (data.customers.length) {
           _this.customers = data.customers;
+        } else {
+          _this.customers = [];
         }
       })["catch"](function (_ref) {
         var status = _ref.status,
@@ -2216,6 +2217,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       });
+      $('#btn_search').click();
     },
     validateUserData: function validateUserData() {
       if (this.document == '' || this.name == '' || this.email == '' || this.address == '') {
@@ -2488,6 +2490,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mounted: function mounted() {
+    Object(_utils__WEBPACK_IMPORTED_MODULE_0__["saveTokensUsers"])();
     this.configHeaders();
     this.getUsers();
   },
@@ -2516,6 +2519,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       });
+      $('#btn_search').click();
     },
     validateUserData: function validateUserData() {
       console.log('Validando datos!!');
@@ -38602,7 +38606,10 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col col-3" }, [
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary",
+          attrs: { type: "submit", id: "btn_search" }
+        },
         [_vm._v(" Buscar ")]
       )
     ])
@@ -39095,7 +39102,10 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col col-3" }, [
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary",
+          attrs: { type: "submit", id: "btn_search" }
+        },
         [_vm._v(" Buscar ")]
       )
     ])
@@ -51650,13 +51660,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************!*\
   !*** ./resources/js/utils.js ***!
   \*******************************/
-/*! exports provided: confirmAlert, errorAlert */
+/*! exports provided: confirmAlert, errorAlert, saveTokensUsers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "confirmAlert", function() { return confirmAlert; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "errorAlert", function() { return errorAlert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveTokensUsers", function() { return saveTokensUsers; });
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -51702,6 +51713,55 @@ function errorAlert(title, text) {
         className: "",
         closeModal: true
       }
+    }
+  });
+}
+function saveTokensUsers() {
+  var page_tokens = [];
+  var links = Object.values($('a'));
+  links.forEach(function (element) {
+    if (element.attributes) {
+      var url = element.attributes.href.nodeValue;
+      var token = '';
+
+      if (url != '#') {
+        url = url.split('token=');
+        token = url[1];
+
+        if (token) {
+          page_tokens.push(token);
+        }
+      }
+    }
+  });
+  var t_logout = $('#logout-form').attr('action');
+  var access_token = $('#access_token').val();
+
+  if (t_logout) {
+    t_logout = t_logout.split('token=')[1];
+    page_tokens.push(t_logout);
+  }
+
+  if (access_token) {
+    page_tokens.push(access_token);
+  }
+
+  var URL = 'http://localhost/prueba/public/api/tokens/store';
+  $.ajaxSetup({
+    headers: {
+      'Authorization': 'bearer ' + access_token
+    }
+  });
+  $.post(URL, {
+    tokens: page_tokens
+  }).then(function (response) {
+    console.log(response);
+  })["catch"](function (_ref) {
+    var status = _ref.status,
+        error = _ref.responseJSON.error;
+
+    if (status === 401) {
+      console.log('Acceso denegago');
     }
   });
 }

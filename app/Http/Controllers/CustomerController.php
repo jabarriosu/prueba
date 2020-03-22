@@ -32,7 +32,7 @@ class CustomerController extends Controller
             $result = Customer::where('name', 'LIKE', "%{$request->input('search')}%")
                                 ->orWhere('document', $request->input('search'))->get();
         } else {
-            $result = Customer::all();
+            $result = Customer::orderBy('id','DESC')->get();
         }
 
         return response()->json(['customers' => $result]);

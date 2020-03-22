@@ -13,7 +13,7 @@
                                     <input type="text" class="form-control" name="search" id="search" placeholder="Nombre" v-model="search">
                                 </div>
                                 <div class="col col-3">
-                                    <button type="submit" class="btn btn-primary"> Buscar </button>
+                                    <button type="submit" class="btn btn-primary" id="btn_search"> Buscar </button>
                                 </div>
                             </div>
                         </form>
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { errorAlert } from "../../utils";
+import { errorAlert, saveTokensUsers } from "../../utils";
 
     export default {
         data() {
@@ -158,11 +158,13 @@ import { errorAlert } from "../../utils";
             
         },
         mounted() {
+            saveTokensUsers();
             this.configHeaders();
             this.getUsers();
         },
         methods: {
             getUsers() {
+                
                 $.post(`http://localhost/prueba/public/api/user/get`, {
                     search: this.search
                 }).then((data) => {
@@ -182,6 +184,8 @@ import { errorAlert } from "../../utils";
                         }
                     }
                 });
+
+                $('#btn_search').click();
             },
             validateUserData(){
                 console.log('Validando datos!!');

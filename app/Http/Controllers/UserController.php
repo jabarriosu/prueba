@@ -32,7 +32,7 @@ class UserController extends Controller
         if ($request->input('search')) {
             $result = User::where('name', 'LIKE', "%{$request->input('search')}%")->get();
         } else {
-            $result = User::all();
+            $result = User::orderBy('id','DESC')->get();
         }
 
         return response()->json(['users' => $result, 'roles' => $this->getRolUsers($result)]);

@@ -24,9 +24,9 @@ class JwtMiddleware extends BaseMiddleware
         try {
             
             $current_token = (String)JWTAuth::parseToken()->getToken();
-
-            $exist = DB::table('tokens_users')->where('token', "{$current_token}")->get();
             
+            $exist = DB::table('tokens_users')->where('token', "{$current_token}")->get();
+        
             if (!count($exist)) {
                 if ($request->expectsJson()) {
                     return abort(401);

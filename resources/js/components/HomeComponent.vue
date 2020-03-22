@@ -16,7 +16,10 @@
 </template>
 
 <script>
+    import { saveTokensUsers } from "../utils";
+
     export default {
+
         data() {
             return {
                 token:''
@@ -26,10 +29,8 @@
             user: Object
         },
         mounted() {
-            console.log('Component mounted.')
-            if (sessionStorage.getItem('access_token')){
-                this.token = sessionStorage.getItem('access_token');
-            }
+            saveTokensUsers();
         }
     }
+
 </script>

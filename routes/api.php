@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::get('login', 'AuthController@frmLogin')->name('login');
 Route::post('register', 'AuthController@register');
+Route::post('tokens/store', 'AuthController@tokensStore');
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login')->name('api.login');

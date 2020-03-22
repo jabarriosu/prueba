@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['frmLogin', 'login', 'register']]);
+        $this->middleware('jwt.verify', ['except' => ['frmLogin', 'login', 'register', 'tokensStore']]);
     }
 
     public function frmLogin()
@@ -99,6 +99,17 @@ class AuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    public function tokensStore(Request $request)
+    {
+        $tokens = $request->post('tokens');
+        
+        if ($tokens && Auth::user()) {
+            foreach ($tokens as $token) {
+                DB::table('tokens_users')->insert(['user_id' => Auth::user()->id, 'token' => $token]);
+            }
+        }
     }
 
     /**

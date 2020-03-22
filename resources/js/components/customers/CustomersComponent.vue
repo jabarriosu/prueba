@@ -13,7 +13,7 @@
                                     <input type="text" class="form-control" name="search" id="search" placeholder="Nombre / Documento" v-model="search">
                                 </div>
                                 <div class="col col-3">
-                                    <button type="submit" class="btn btn-primary"> Buscar </button>
+                                    <button type="submit" class="btn btn-primary" id="btn_search"> Buscar </button>
                                 </div>
                             </div>
                          </form>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-    import { errorAlert } from "../../utils";
+    import { errorAlert, saveTokensUsers } from "../../utils";
 
     export default {
         data() {
@@ -135,17 +135,20 @@
             
         },
         mounted() {
+            saveTokensUsers();
             this.configHeaders();
             this.getCustomers();
         },
         methods: {
             getCustomers() {
-
+                
                 $.post(`http://localhost/prueba/public/api/customer/get`, {
                     search: this.search
                 }).then((data) => {
                     if (data.customers.length) {
                         this.customers = data.customers;
+                    } else {
+                        this.customers = [];
                     }
 
                 }).catch(({status, responseJSON: {error}}) => {
@@ -156,6 +159,8 @@
                         }
                     }
                 });
+
+                $('#btn_search').click();
             },
             validateUserData(){
                 if (this.document  == '' || this.name == '' || this.email == '' || this.address == '') {
