@@ -65,7 +65,7 @@
             login() {
                 $('#access_error').html('');
 
-                $.post(`http://localhost/admin/public/api/auth/login`, {
+                $.post(`http://localhost/prueba/public/api/auth/login`, {
                     email: this.email,
                     password: this.password
                 }).then(({user, access_token}) => {
@@ -74,7 +74,7 @@
                         sessionStorage.setItem('access_token', 'bearer ' + access_token);
                         localStorage.setItem('user', JSON.stringify(user));
 
-                        return window.location.href = `http://localhost/admin/public/home?token=${access_token}`;
+                        return window.location.href = `http://localhost/prueba/public/home?token=${access_token}`;
                     }
 
                 }).catch(({status, responseJSON: {error}}) => {

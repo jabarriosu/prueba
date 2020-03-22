@@ -141,7 +141,7 @@
         methods: {
             getCustomers() {
 
-                $.post(`http://localhost/admin/public/api/customer/get`, {
+                $.post(`http://localhost/prueba/public/api/customer/get`, {
                     search: this.search
                 }).then((data) => {
                     if (data.customers.length) {
@@ -165,10 +165,10 @@
                 }
             },
             storeCustomer(){
-                var URL = 'http://localhost/admin/public/api/customer/store'
+                var URL = 'http://localhost/prueba/public/api/customer/store';
                 var method = 'POST';
                 if (this.customer_id) {
-                    URL = `http://localhost/admin/public/api/customer/${this.customer_id}/update`;
+                    URL = `http://localhost/prueba/public/api/customer/${this.customer_id}/update`;
                     method = 'PUT';
                 }
 
@@ -179,7 +179,6 @@
                     address: this.address,
                     _method: method,
                 }).then(({customer, errors}) => {
-                    console.log(errors);
                     if (customer.id) {
                         this.edit = false;
                         this.getCustomers();
@@ -188,17 +187,14 @@
                     }
 
                 }).catch(({status, responseJSON: {error}}) => {
-                    console.log(error);
-                    if (status === 422) {
-                        for (let field in errors) {
-                            this.errors = {...this.errors, [field]: errors[field].shift()}
-                        }
+                    if (status === 401) {
+                        console.log('Acceso denegago');
                     }
                 });
             },
             deleteCustomer(customer_id){
                 if (confirm("¿Desea eliminar el cliente?") && customer_id) {
-                   $.post(`http://localhost/admin/public/api/customer/${customer_id}/delete`, {
+                   $.post(`http://localhost/prueba/public/api/customer/${customer_id}/delete`, {
                        _method: "DELETE",
                     }).then(({customer, result}) => {
                         

@@ -163,7 +163,7 @@ import { errorAlert } from "../../utils";
         },
         methods: {
             getUsers() {
-                $.post(`http://localhost/admin/public/api/user/get`, {
+                $.post(`http://localhost/prueba/public/api/user/get`, {
                     search: this.search
                 }).then((data) => {
                     if (data.users.length) {
@@ -192,10 +192,10 @@ import { errorAlert } from "../../utils";
                 }
             },
             storeUser(){
-                var URL = 'http://localhost/admin/public/api/user/store'
+                var URL = 'http://localhost/prueba/public/api/user/store'
                 var method = 'POST';
                 if (this.user_id) {
-                    URL = `http://localhost/admin/public/api/user/${this.user_id}/update`;
+                    URL = `http://localhost/prueba/public/api/user/${this.user_id}/update`;
                     method = 'PUT';
                 }
 
@@ -225,7 +225,7 @@ import { errorAlert } from "../../utils";
             },
             deleteUser(user_id){
                 if (confirm("¿Desea eliminar el usuario?") && user_id) {
-                   $.post(`http://localhost/admin/public/api/user/${user_id}/delete`, {
+                   $.post(`http://localhost/prueba/public/api/user/${user_id}/delete`, {
                        _method: "DELETE",
                     }).then(({user, result}) => {
                         

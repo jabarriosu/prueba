@@ -2017,7 +2017,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     login: function login() {
       $('#access_error').html('');
-      $.post("http://localhost/admin/public/api/auth/login", {
+      $.post("http://localhost/prueba/public/api/auth/login", {
         email: this.email,
         password: this.password
       }).then(function (_ref) {
@@ -2027,7 +2027,7 @@ __webpack_require__.r(__webpack_exports__);
         if (user.id) {
           sessionStorage.setItem('access_token', 'bearer ' + access_token);
           localStorage.setItem('user', JSON.stringify(user));
-          return window.location.href = "http://localhost/admin/public/home?token=".concat(access_token);
+          return window.location.href = "http://localhost/prueba/public/home?token=".concat(access_token);
         }
       })["catch"](function (_ref2) {
         var status = _ref2.status,
@@ -2199,7 +2199,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getCustomers: function getCustomers() {
       var _this = this;
 
-      $.post("http://localhost/admin/public/api/customer/get", {
+      $.post("http://localhost/prueba/public/api/customer/get", {
         search: this.search
       }).then(function (data) {
         if (data.customers.length) {
@@ -2227,11 +2227,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     storeCustomer: function storeCustomer() {
       var _this2 = this;
 
-      var URL = 'http://localhost/admin/public/api/customer/store';
+      var URL = 'http://localhost/prueba/public/api/customer/store';
       var method = 'POST';
 
       if (this.customer_id) {
-        URL = "http://localhost/admin/public/api/customer/".concat(this.customer_id, "/update");
+        URL = "http://localhost/prueba/public/api/customer/".concat(this.customer_id, "/update");
         method = 'PUT';
       }
 
@@ -2244,7 +2244,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (_ref2) {
         var customer = _ref2.customer,
             errors = _ref2.errors;
-        console.log(errors);
 
         if (customer.id) {
           _this2.edit = false;
@@ -2256,12 +2255,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (_ref3) {
         var status = _ref3.status,
             error = _ref3.responseJSON.error;
-        console.log(error);
 
-        if (status === 422) {
-          for (var field in errors) {
-            _this2.errors = _objectSpread({}, _this2.errors, _defineProperty({}, field, errors[field].shift()));
-          }
+        if (status === 401) {
+          console.log('Acceso denegago');
         }
       });
     },
@@ -2269,7 +2265,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this3 = this;
 
       if (confirm("¿Desea eliminar el cliente?") && customer_id) {
-        $.post("http://localhost/admin/public/api/customer/".concat(customer_id, "/delete"), {
+        $.post("http://localhost/prueba/public/api/customer/".concat(customer_id, "/delete"), {
           _method: "DELETE"
         }).then(function (_ref4) {
           var customer = _ref4.customer,
@@ -2499,7 +2495,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getUsers: function getUsers() {
       var _this = this;
 
-      $.post("http://localhost/admin/public/api/user/get", {
+      $.post("http://localhost/prueba/public/api/user/get", {
         search: this.search
       }).then(function (data) {
         if (data.users.length) {
@@ -2533,11 +2529,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     storeUser: function storeUser() {
       var _this2 = this;
 
-      var URL = 'http://localhost/admin/public/api/user/store';
+      var URL = 'http://localhost/prueba/public/api/user/store';
       var method = 'POST';
 
       if (this.user_id) {
-        URL = "http://localhost/admin/public/api/user/".concat(this.user_id, "/update");
+        URL = "http://localhost/prueba/public/api/user/".concat(this.user_id, "/update");
         method = 'PUT';
       }
 
@@ -2575,7 +2571,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this3 = this;
 
       if (confirm("¿Desea eliminar el usuario?") && user_id) {
-        $.post("http://localhost/admin/public/api/user/".concat(user_id, "/delete"), {
+        $.post("http://localhost/prueba/public/api/user/".concat(user_id, "/delete"), {
           _method: "DELETE"
         }).then(function (_ref4) {
           var user = _ref4.user,
@@ -51730,8 +51726,8 @@ function errorAlert(title, text) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\admin\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\admin\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\prueba\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\prueba\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
